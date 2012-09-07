@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <script src="shared/processing-1.4.1.min.js"></script>
+  <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.1/jquery.min.js"></script>
+  <link rel="stylesheet" href="shared/bootstrap.min.css" />
+  <link rel="stylesheet" href="shared/style.css" />
+</head>
+<body>
+  <div class="navbar navbar-static-top">
+    <div class="navbar-inner">
+      <a class="brand" href="index.html">Processing</a>
+      <ul class="nav">
+        <li><a href="index.html">rectMode</a></li>
+        <li class="active"><a href="arc.html">arc</a></li>
+        <li><a href="bezier.html">bezier</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="container">
+    <div class="function">
+      <div class="row">
+        <div class="span8 offset4">
+          <h2>arc()</h2>
+        </div>
+      </div>
+      <div class="row">
+        <div class="span4">
+          <canvas id="canvas" width="300" height="300"></canvas>
+        </div>
+        <div class="span8">
+          <p>Draws an arc to the screen. Arcs are drawn along the outer edge of an ellipse defined by the <code>a</code>, <code>b</code>, <code>c</code>, and <code>d</code> parameters. The origin of the arc's ellipse may be changed with the <code>ellipseMode()</code> function. Use the <code>start</code> and <code>stop</code> parameters to specify the angles (in radians) at which to draw the arc.</p>
+          <p>The <code>a</code> and <code>b</code> parameter are the X, Y origin of the arc.  The <code>c</code> and <code>d</code> parameter are the width and height of the arc.  The <code>start</code> and <code>stop</code> parameters specify where to start and stop drawing the arc, specified in radians.  There are a few constants defined that help make this a little easier, like <code>PI</code>, <code>TWO_PI</code>, <code>HALF_PI</code>, and <code>QUARTER_PI</code>.
+          <pre>
+  // ellipseMode(CENTER);
+  // arc(a, b, c, d, start, stop);
+  ellipseMode(<input type="text" id="ellipseMode" value="CENTER" class="input-small" />);
+  arc(<input type="text" id="arg1" value="150" class="input-mini" />,<input type="text" id="arg2" value="150" class="input-mini" />,<input type="text" id="arg3" value="50" class="input-mini" />,<input type="text" id="arg4" value="50" class="input-mini" />,<input type="text" id="arg5" value="HALF_PI" class="input-mini" />,<input type="text" id="arg6" value="PI" class="input-mini" />);
+          </pre>
+        </div>
+      </div>
+    </div>
+  </div>
+  <br/>
+  <script type="text/javascript">
+    function processingCode(processing) {
+      processing.setup = function() {
+        processing.size(300,300);
+      }
+      processing.draw = function() {
+        processing.fill(255);
+        processing.background(50);
+        processing.stroke(75);
+        processing.strokeWeight(1);
+        for(var i = 25; i < 300; i+=25){
+          processing.line(i,0,i,300);
+          processing.line(0,i,300,i);
+        };
+        if(!$('#arg5').val().match(/(\+|-|\*|\/)$/) && !$('#arg6').val().match(/(\+|-|\*|\/)$/) && $('#ellipseMode').val().match(/CORNERS|CENTER|CORNER|RADIUS/)){
+          processing.ellipseMode(eval("processing." + $('#ellipseMode').val()));
+          processing.arc(eval($('#arg1').val()),eval($('#arg2').val()),eval($('#arg3').val()),eval($('#arg4').val()),eval($('#arg5').val().replace(/([A-Z_]+)/g,"processing.$1")),eval($('#arg6').val().replace(/([A-Z_]+)/g,"processing.$1")));
+          processing.strokeWeight(10);
+          processing.stroke(221,17,68);
+          processing.fill(221,17,68);
+          processing.point(eval($('#arg1').val()),eval($('#arg2').val()));
+          processing.text("("+ $('#arg1').val() + "," + $('#arg2').val() + ")", eval($('#arg1').val())+10, eval($('#arg2').val())+10);
+          if($('#ellipseMode').val().match(/CORNERS/)){
+            processing.point(eval($('#arg3').val()),eval($('#arg4').val()));
+            processing.text("("+ $('#arg3').val() + "," + $('#arg4').val() + ")", eval($('#arg3').val())+10, eval($('#arg4').val())+10);
+          }
+        }
+      }
+    }
+    var canvas = $('#canvas')[0];
+    var p = new Processing(canvas, processingCode);
+  </script>
+</body>
