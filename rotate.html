@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <script src="shared/processing-1.4.1.min.js"></script>
+  <script src="shared/jquery.min.js"></script>
+  <script src="shared/html5slider.js"></script>
+  <link rel="stylesheet" href="shared/bootstrap.min.css" />
+  <link rel="stylesheet" href="shared/style.css" />
+</head>
+<body>
+  <div class="navbar navbar-static-top">
+    <div class="navbar-inner">
+      <a class="brand" href="index.html">Processing</a>
+      <ul class="nav">
+        <li><a href="index.html">rectMode</a></li>
+        <li><a href="arc.html">arc</a></li>
+        <li><a href="bezier.html">bezier</a></li>
+        <li><a href="alpha.html">alpha</a></li>
+        <li class="active"><a href="rotate.html">rotate</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="container">
+    <div class="function">
+      <div class="row">
+        <div class="span8 offset2">
+          <h2>rotate()</h2>
+        </div>
+      </div>
+      <div class="row">
+        <div class="span8 offset2">
+          <p>Rotate is a function that will rotate your <i>entire</i> sketch around the origin (0,0).  Nine times out of ten, this isn't what you want.  To get the sketch to rotate around a point you want, you can translate the point you want to rotate about to the origin, then rotate, and then translate back.  Below is an example of just using <code>rotate()</code>, and using both <code>rotate()</code> and <code>translate()</code>.  There's also a slider that you can adjust to change the degree of rotation.</p>
+        </div>
+      </div>
+      <div class="row">
+        <div class="span4 offset4">
+          <input class="rotation" type="range" min="0" max="360" step="1" value="0" />
+        </div>
+      </div>
+      <div class="row">
+        <div class="offset1 span4">
+          <h2>Only rotate()</h2>
+          <canvas id="canvas" width="300" height="300"></canvas>
+        </div>
+        <div class="offset2 span4">
+          <h2>With translate()</h2>
+          <canvas id="canvas2" width="300" height="300"></canvas>
+        </div>
+      </div>
+      <div class="row">
+        <div class="span6">
+          <pre>
+rotate(radians(<span class="rotation_degree">0</span>));
+triangle(75,125,150,75,225,125);
+rect(87,125,125,100);
+          </pre>
+        </div>
+        <div class="span6">
+          <pre>
+translate(150,150);
+rotate(radians(<span class="rotation_degree">0</span>));
+translate(-150,-150);
+triangle(75,125,150,75,225,125);
+rect(87,125,125,100);
+          </pre>
+        </div>
+      </div>
+    </div>
+  </div>
+  <br/>
+  <script type="text/javascript">
+    function canvas1Code(processing) {
+      processing.setup = function() {
+        processing.size(300,300);
+      }
+      processing.draw = function() {
+        processing.fill(255);
+        processing.background(50);
+        processing.stroke(75);
+        processing.strokeWeight(1);
+        for(var i = 25; i < 300; i+=25){
+          processing.line(i,0,i,300);
+          processing.line(0,i,300,i);
+        };
+        $('.rotation_degree').html($('input.rotation').val());
+        processing.stroke(255);
+        processing.pushMatrix();
+        processing.rotate(processing.radians(eval($('input.rotation').val())));
+        processing.triangle(75,125,150,75,225,125);
+        processing.rect(87,125,125,100);
+        processing.popMatrix();
+      }
+    }
+    function canvas2Code(processing) {
+      processing.setup = function() {
+        processing.size(300,300);
+      }
+      processing.draw = function() {
+        processing.fill(255);
+        processing.background(50);
+        processing.stroke(75);
+        processing.strokeWeight(1);
+        for(var i = 25; i < 300; i+=25){
+          processing.line(i,0,i,300);
+          processing.line(0,i,300,i);
+        };
+        processing.stroke(255);
+        processing.pushMatrix();
+        processing.translate(150,150);
+        processing.rotate(processing.radians(eval($('input.rotation').val())));
+        processing.translate(-150,-150);
+        processing.triangle(75,125,150,75,225,125);
+        processing.rect(87,125,125,100);
+        processing.popMatrix();
+      }
+    }
+    var canvas1 = $('#canvas')[0];
+    var canvas2 = $('#canvas2')[0];
+    var p1 = new Processing(canvas1, canvas1Code);
+    var p2 = new Processing(canvas2, canvas2Code);
+  </script>
+</body>
