@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <script src="shared/processing-1.4.1.min.js"></script>
+  <script src="shared/jquery.min.js"></script>
+  <link rel="stylesheet" href="shared/bootstrap.min.css" />
+  <link rel="stylesheet" href="shared/style.css" />
+  <style>
+    input.input-mini {
+      width: 30px;
+    }
+  </style>
+</head>
+<body>
+  <div class="navbar navbar-static-top">
+    <div class="navbar-inner">
+      <a class="brand" href="index.html">Processing</a>
+      <ul class="nav">
+        <li><a href="index.html">rectMode</a></li>
+        <li><a href="arc.html">arc</a></li>
+        <li><a href="bezier.html">bezier</a></li>
+        <li class="active"><a href="alpha.html">alpha</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="container">
+    <div class="function">
+      <div class="row">
+        <div class="span8 offset4">
+          <h2>alpha</h2>
+        </div>
+      </div>
+      <div class="row">
+        <div class="span4">
+          <canvas id="canvas" width="300" height="300"></canvas>
+        </div>
+        <div class="span8">
+          <p>Alpha is the representation of opacity for a computer.  0% alpha, is completely transparent, and 100% alpha is completely opaque.  In Processing, we represent the alpha channel just like we represent any other channel (Red, Green, or Blue), 0 to 255.  So play around with the two fill alpha values to see how it affects the colors and the blending.</p>
+          <pre>
+  fill(255,0,0,<input type="text" id="arg1" value="113" class="input-mini" />);
+  ellipse(100,100,150,150);
+  fill(0,0,255,<input type="text" id="arg2" value="113" class="input-mini" />);
+  ellipse(200,100,150,150);
+  fill(0,255,0,<input type="text" id="arg3" value="113" class="input-mini" />);
+  ellipse(150,200,150,150);
+          </pre>
+        </div>
+      </div>
+    </div>
+  </div>
+  <br/>
+  <script type="text/javascript">
+    function processingCode(processing) {
+      processing.setup = function() {
+        processing.size(300,300);
+        processing.fill(255);
+      }
+      processing.draw = function() {
+        processing.background(255);
+        processing.noStroke();
+        processing.fill(255,0,0,eval($('#arg1').val()));
+        processing.ellipse(100,100,150,150);
+        processing.fill(0,0,255,eval($('#arg2').val()));
+        processing.ellipse(200,100,150,150);
+        processing.fill(0,255,0,eval($('#arg3').val()));
+        processing.ellipse(150,200,150,150);
+      }
+    }
+    var canvas = $('#canvas')[0];
+    var p = new Processing(canvas, processingCode);
+  </script>
+</body>
